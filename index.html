@@ -1180,6 +1180,11 @@ button {
   color: #ffffff;
 }
 
+/* ========== ADMIN HIDDEN (KRİTİK) ========== */
+.admin-hidden {
+  display: none !important;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .topbar {
@@ -1338,9 +1343,9 @@ button {
     <button class="nav-btn" data-page="files">Dosyalar</button>
     <button class="nav-btn" data-page="osint">OSINT</button>
     <button class="nav-btn" data-page="vip">VIP</button>
-    <button class="nav-btn" data-page="jsarac">JS Araçları</button>
+    <button class="nav-btn" data-page="jsarac">Basit Oyunlar</button>
     <button class="nav-btn" data-page="discordinfo">Discord OSINT</button>
-    <button class="nav-btn" data-page="admin" id="adminNav" style="display:none;">Yetkili</button>
+    <button class="nav-btn admin-hidden" data-page="admin" id="adminNav">Yetkili</button>
   </nav>
   <div style="display:flex;gap:8px;align-items:center;">
     <span id="menuKullanici" style="color:#aaa;font-size:14px;display:none;"></span>
@@ -1423,16 +1428,16 @@ button {
 <section id="jsarac" class="page">
   <div class="section-head">
     <div>
-      <span class="eyebrow">JAVASCRIPT TOOLS</span>
-      <h2>JS Araçları</h2>
-      <p>Tarayıcıda çalışan saf JavaScript araçları. Vanilla JS ile geliştirilmiştir.</p>
+    <span class="eyebrow">BASIT OYUNLAR</span>
+    <h2>Basit Oyunlar</h2>
+    <p>Tarayıcıda çalışan basit JavaScript oyunları ve araçları.</p>
     </div>
   </div>
   <div class="tool-grid">
     <div class="tool">
       <span>🧮</span>
       <h3>Hesap Makinesi</h3>
-      <p>Basit JavaScript hesap makinesi.</p>
+      <p>Basit hesap makinesi.</p>
       <input id="jsHesapInput" placeholder="Örn: 5+3*2">
       <button onclick="jsHesap()">Hesapla</button>
       <pre id="jsHesapSonuc"></pre>
@@ -1563,11 +1568,25 @@ function updateAdminVisibility() {
   const adminNav = document.getElementById('adminNav');
   if (!adminNav) return;
   
-  let user = JSON.parse(localStorage.getItem('cyberUser'));
-  if (user && (user.name.toLowerCase() === 'admin' || user.role === 'Yönetici' || user.role === 'Kurucu' || user.role === 'Yetkili')) {
-    adminNav.style.display = 'block';
+  let user = null;
+  try {
+    const str = localStorage.getItem('cyberUser');
+    if (str && str !== 'undefined' && str !== 'null') {
+      user = JSON.parse(str);
+    }
+  } catch(e) { user = null; }
+  
+  const isAdmin = user && user.name && (
+    user.name.toLowerCase() === 'admin' || 
+    user.role === 'Yönetici' || 
+    user.role === 'Kurucu' || 
+    user.role === 'Yetkili'
+  );
+  
+  if (isAdmin) {
+    adminNav.classList.remove('admin-hidden');
   } else {
-    adminNav.style.display = 'none';
+    adminNav.classList.add('admin-hidden');
   }
 }
 
@@ -1646,7 +1665,6 @@ function girisYap() {
   const found = users.find(u => u.name === user && u.password === pass);
   if (found) {
     
-    // admin hesabı her zaman Kurucu olsun
     if (found.name.toLowerCase() === 'admin') {
         found.role = 'Kurucu';
         let usersList = JSON.parse(localStorage.getItem('users')) || [];
@@ -1669,6 +1687,8 @@ function girisYap() {
     document.getElementById('menuRole').textContent = found.role || 'Üye';
     updateStats();
     updateAdminVisibility();
+    setTimeout(updateAdminVisibility, 100);
+    renderUsersList();
     showToast('✅ Hoş geldin, ' + user + '!');
   } else {
     hata.textContent = '❌ Kullanıcı adı veya şifre hatalı!';
@@ -1725,7 +1745,6 @@ function kayitOl() {
     hata.style.display = 'block'; return;
   }
 
-  // admin isimli kullanıcı kayıt olursa otomatik Kurucu
   let role = 'Üye';
   if (user.toLowerCase() === 'admin') {
     role = 'Kurucu';
@@ -1745,6 +1764,8 @@ function kayitOl() {
   document.getElementById('menuRole').textContent = role;
   updateStats();
   updateAdminVisibility();
+  setTimeout(updateAdminVisibility, 100);
+  renderUsersList();
   basari.textContent = '✅ Kayıt başarılı!';
   basari.style.display = 'block';
   showToast('✅ Hoş geldin, ' + user + '!');
@@ -1757,7 +1778,7 @@ function cikisYap() {
   document.getElementById('girisButon').style.display = 'inline-flex';
   document.getElementById('kayitButon').style.display = 'inline-flex';
   document.getElementById('cikisButon').style.display = 'none';
-  document.getElementById('adminNav').style.display = 'none';
+  document.getElementById('adminNav').classList.add('admin-hidden');
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
   document.getElementById('loginEmail').value = '';
@@ -1776,6 +1797,7 @@ function go(page){
   document.getElementById(page).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.querySelector(`.nav-btn[data-page="${page}"]`)?.classList.add('active');
+  if (page === 'admin') renderUsersList();
 }
 document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 function toggleUserMenu(){document.getElementById('userMenu').classList.toggle('hidden');}
@@ -1788,15 +1810,18 @@ function searchAll(){const q=document.getElementById('globalSearch').value.trim(
 function updateStats() {
   let users = JSON.parse(localStorage.getItem('users')) || [];
   if (!Array.isArray(users)) users = [];
-  document.getElementById('statUsers').textContent = users.length;
+  const statUsersEl = document.getElementById('statUsers');
+  if (statUsersEl) statUsersEl.textContent = users.length;
 
   let products = JSON.parse(localStorage.getItem('products')) || [];
   if (!Array.isArray(products)) products = [];
-  document.getElementById('statProducts').textContent = products.length;
+  const statProductsEl = document.getElementById('statProducts');
+  if (statProductsEl) statProductsEl.textContent = products.length;
 
   let shares = JSON.parse(localStorage.getItem('shares')) || [];
   if (!Array.isArray(shares)) shares = [];
-  document.getElementById('statFiles').textContent = shares.length;
+  const statFilesEl = document.getElementById('statFiles');
+  if (statFilesEl) statFilesEl.textContent = shares.length;
 
   if (!window._startTime) window._startTime = Date.now();
   const elapsed = Math.floor((Date.now() - window._startTime) / 1000);
@@ -1804,7 +1829,8 @@ function updateStats() {
   if (elapsed < 60) uptimeStr = elapsed + 's';
   else if (elapsed < 3600) uptimeStr = Math.floor(elapsed/60) + 'm';
   else uptimeStr = Math.floor(elapsed/3600) + 'h';
-  document.getElementById('statUptime').textContent = uptimeStr;
+  const statUptimeEl = document.getElementById('statUptime');
+  if (statUptimeEl) statUptimeEl.textContent = uptimeStr;
 }
 setInterval(updateStats, 5000);
 
@@ -2137,12 +2163,31 @@ function renderFileFeed(){
   feed.innerHTML = shares.slice(-5).reverse().map(s => `<div class="feed-item"><h4>${s.title||'Paylaşım'}</h4><p>${s.text||''}</p><small>${s.date||''}</small></div>`).join('');
 }
 
+// ==================== ADMİN KULLANICISINI OTOMATİK OLUŞTUR ====================
+(function seedAdmin() {
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  const adminUser = users.find(u => u.name.toLowerCase() === 'admin');
+  
+  if (!adminUser) {
+    users.push({ 
+      name: 'admin', 
+      email: 'admin@gmail.com', 
+      password: 'admin123', 
+      role: 'Kurucu' 
+    });
+    localStorage.setItem('users', JSON.stringify(users));
+    console.log('✅ Admin kullanıcısı oluşturuldu: admin / admin123');
+  } else if (adminUser.role !== 'Kurucu') {
+    adminUser.role = 'Kurucu';
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+})();
+
 // ==================== BAŞLANGIÇ ====================
 (function init(){
   if (isLoggedIn()) {
     const user = JSON.parse(localStorage.getItem('cyberUser'));
     
-    // admin hesabı her zaman Kurucu olsun
     if (user.name.toLowerCase() === 'admin') {
         user.role = 'Kurucu';
         localStorage.setItem('cyberUser', JSON.stringify(user));
@@ -2185,6 +2230,9 @@ function renderFileFeed(){
   renderUsersList();
   updateStats();
   updateAdminVisibility();
+  setTimeout(updateAdminVisibility, 100);
+  setTimeout(updateAdminVisibility, 500);
+  setTimeout(updateAdminVisibility, 1500);
 })();
 </script>
 </body>
