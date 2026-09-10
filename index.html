@@ -1,0 +1,2057 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CYBERTECH — Topluluk & Pazar</title>
+<style>
+/* ========== PREMIUM SİYAH-BEYAZ TEMA ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0d0d0d;
+  color: #e0e0e0;
+  line-height: 1.6;
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(ellipse at 20% 50%, rgba(60, 60, 60, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, rgba(200, 200, 200, 0.05) 0%, transparent 60%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 6px);
+}
+
+/* ========== GİRİŞ MODAL ========== */
+#girisModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  flex-direction: column;
+  gap: 20px;
+  display: none;
+}
+#girisModal.open {
+  display: flex;
+}
+#girisModal .giris-kutu {
+  background: rgba(20, 20, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 32px 28px;
+  max-width: 420px;
+  width: 92%;
+  text-align: center;
+}
+#girisModal h1 {
+  font-size: 26px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffffff, #888888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+}
+#girisModal p {
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+#girisModal input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e0e0e0;
+  border-radius: 100px;
+  font-size: 13px;
+  outline: none;
+  transition: 0.3s;
+  margin-bottom: 10px;
+}
+#girisModal input:focus {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.6);
+}
+#girisModal .btn-giris {
+  background: #ffffff;
+  color: #0d0d0d;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
+  margin-bottom: 6px;
+}
+#girisModal .btn-giris:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
+}
+#girisModal .btn-kayit {
+  background: #333;
+  color: #fff;
+}
+#girisModal .btn-kayit:hover {
+  background: #444;
+}
+#girisModal .hata {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+  display: none;
+}
+#girisModal .basari {
+  color: #4caf50;
+  font-size: 12px;
+  margin-top: 4px;
+  display: none;
+}
+#girisModal .captcha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+#girisModal .captcha .kod {
+  background: rgba(0,0,0,0.5);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  color: #f5b81b;
+  border: 1px dashed rgba(255,215,0,0.3);
+  user-select: none;
+}
+#girisModal .captcha input {
+  width: 120px;
+  margin: 0;
+}
+#girisModal .captcha .yenile {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s;
+  padding: 0 4px;
+}
+#girisModal .captcha .yenile:hover {
+  color: #fff;
+  transform: rotate(90deg);
+}
+#girisModal .gecis-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #888;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#girisModal .gecis-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* ========== TOPBAR ========== */
+.topbar {
+  background: rgba(13, 13, 13, 0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+/* ==== DEĞİŞTİRİLEN LOGO ALANI (SOL ÜST) ==== */
+.brand-mark {
+  background-color: transparent;
+  background-image: url('cybertech.png'); /* Göz logosu dosya adı */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: transparent;
+  font-size: 0;
+  font-weight: 900;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Yuvarlak yapıldı */
+  transition: 0.3s;
+}
+
+.brand-mark:hover {
+  transform: rotate(-5deg) scale(1.05);
+}
+
+.brand b {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #ffffff, #aaaaaa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand small {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  color: #666666;
+  text-transform: uppercase;
+  -webkit-text-fill-color: #666666;
+}
+
+.search {
+  display: flex;
+  gap: 0;
+  flex: 1;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.search:focus-within {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.02);
+}
+
+.search input {
+  flex: 1;
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-size: 13px;
+  outline: none;
+}
+
+.search input::placeholder {
+  color: #555555;
+  font-size: 13px;
+}
+
+.search button {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #ffffff, #999999);
+  color: #0d0d0d;
+  border: none;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.search button:hover {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+}
+
+nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.nav-btn {
+  background: transparent;
+  color: #777777;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-btn.active {
+  color: #0d0d0d;
+  background: #ffffff;
+  font-weight: 600;
+}
+
+.nav-btn.active:hover {
+  background: #e8e8e8;
+}
+
+.avatar {
+  background: linear-gradient(135deg, #2a2a2a, #0d0d0d);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* ========== USER MENU ========== */
+.user-menu {
+  position: fixed;
+  top: 76px;
+  right: 32px;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 16px;
+  min-width: 180px;
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 999;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+
+.user-menu.show {
+  display: flex;
+}
+
+.user-menu b {
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.user-menu span {
+  color: #666666;
+  font-size: 12px;
+}
+
+.user-menu button {
+  background: transparent;
+  color: #aaaaaa;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+.user-menu button:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+/* ========== İÇERİK ALANI ========== */
+#anaIcerik {
+  display: none;
+}
+
+/* ========== PAGES ========== */
+.page {
+  display: none;
+  padding: 40px 32px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease;
+}
+
+.page.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== HERO ========== */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.hero h1 {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  background: linear-gradient(90deg, #ffffff 0%, #999999 50%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, #888888, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  color: #888888;
+  font-size: 17px;
+  max-width: 480px;
+  margin: 16px 0 24px;
+  line-height: 1.7;
+}
+
+.eyebrow {
+  color: #666666;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.hero-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 28px;
+  border-radius: 24px;
+  min-width: 200px;
+  transition: 0.3s;
+}
+
+.hero-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-4px);
+}
+
+.hero-card b {
+  color: #ffffff;
+  font-size: 18px;
+  display: block;
+  margin-top: 12px;
+}
+
+.hero-card span {
+  color: #888888;
+  font-size: 14px;
+}
+
+.hero-card small {
+  color: #444444;
+  font-size: 12px;
+  display: block;
+  margin-top: 6px;
+}
+
+/* ==== DEĞİŞTİRİLEN DURUM KARTI ALANI (SAĞ ALT) ==== */
+.radar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%; /* Yuvarlak yapıldı */
+  background-color: transparent;
+  background-image: url('cybertech.png'); /* Göz logosu dosya adı */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+/* ========== BUTTONS ========== */
+button {
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: inherit;
+}
+
+.btn-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.primary {
+  background: #ffffff;
+  color: #0d0d0d;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.1);
+}
+
+.discord-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: #cccccc;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.discord-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.ghost {
+  background: transparent;
+  color: #888888;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.ghost:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.text-btn {
+  background: transparent;
+  color: #666666;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 4px;
+}
+
+.text-btn:hover {
+  color: #ffffff;
+}
+
+.danger {
+  background: rgba(255, 50, 50, 0.1);
+  color: #ff6666;
+  border: 1px solid rgba(255, 50, 50, 0.15);
+  padding: 10px 24px;
+  border-radius: 100px;
+  font-weight: 600;
+}
+
+.danger:hover {
+  background: rgba(255, 50, 50, 0.15);
+}
+
+/* ========== STATS ========== */
+.stats {
+  display: flex;
+  gap: 48px;
+  padding: 32px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.stats div b {
+  font-size: 30px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffffff, #888888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+}
+
+.stats div span {
+  color: #555555;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ========== SECTION HEAD ========== */
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 48px 0 24px;
+}
+
+.section-head h2 {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffffff, #999999);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-head p {
+  color: #666666;
+  font-size: 14px;
+}
+
+/* ========== FILTERS ========== */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  transition: 0.3s;
+}
+
+.filters:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.filters input,
+.filters select {
+  padding: 10px 18px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e0e0e0;
+  border-radius: 100px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: 0.3s;
+  outline: none;
+  min-width: 140px;
+}
+
+.filters input {
+  flex: 1;
+  min-width: 180px;
+}
+
+.filters input::placeholder {
+  color: #555555;
+}
+
+.filters input:focus,
+.filters select:focus {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.02);
+}
+
+.filters select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+  cursor: pointer;
+}
+
+.filters select option {
+  background: #1a1a1a;
+  color: #e0e0e0;
+}
+
+.filters select:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ========== GRID & CARDS ========== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.cards .card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 24px;
+  transition: 0.4s;
+}
+
+.cards .card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.cards .card h3 {
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.cards .card p {
+  color: #888888;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.cards .card small {
+  color: #444444;
+  font-size: 12px;
+  display: block;
+  margin-top: 8px;
+}
+
+/* ========== TOOL GRID ========== */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.tool {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 24px;
+  transition: 0.4s;
+}
+
+.tool:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.tool span {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tool h3 {
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.tool p {
+  color: #777777;
+  font-size: 13px;
+  margin: 4px 0 12px;
+}
+
+.tool input,
+.tool textarea {
+  width: 100%;
+  padding: 10px 16px;
+  margin: 6px 0;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e0e0e0;
+  border-radius: 12px;
+  font-size: 13px;
+  transition: 0.3s;
+  font-family: inherit;
+}
+
+.tool input:focus,
+.tool textarea:focus {
+  border-color: rgba(255, 255, 255, 0.12);
+  outline: none;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.tool input::placeholder,
+.tool textarea::placeholder {
+  color: #444444;
+}
+
+.tool button {
+  background: rgba(255, 255, 255, 0.06);
+  color: #cccccc;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.tool button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.tool pre {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  border-radius: 12px;
+  color: #888888;
+  font-size: 12px;
+  margin-top: 8px;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* ========== CHANNEL TABS ========== */
+.channel-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.channel-tabs button {
+  background: transparent;
+  color: #666666;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.channel-tabs button:hover {
+  color: #aaaaaa;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.channel-tabs button.active {
+  background: #ffffff;
+  color: #0d0d0d;
+  border-color: #ffffff;
+}
+
+/* ========== FEED ========== */
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feed-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 18px 22px;
+  transition: 0.3s;
+}
+
+.feed-item:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: translateX(4px);
+}
+
+.feed-item h4 {
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.feed-item p {
+  color: #888888;
+  font-size: 13px;
+}
+
+.feed-item small {
+  color: #444444;
+  font-size: 11px;
+}
+
+/* ========== VIP ========== */
+.vip-hero {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 48px;
+  border-radius: 24px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.vip-hero:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.vip-hero h2 {
+  font-size: 38px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffffff, #888888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.vip-hero p {
+  color: #666666;
+  font-size: 15px;
+}
+
+.vip-price {
+  font-size: 42px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffffff, #888888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 16px 0;
+}
+
+.vip-price small {
+  font-size: 18px;
+  color: #444444;
+  -webkit-text-fill-color: #444444;
+}
+
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.benefits div {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 14px;
+  border-radius: 16px;
+  color: #888888;
+  text-align: center;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.benefits div:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: scale(1.02);
+}
+
+/* ========== ADMIN ========== */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  padding: 24px;
+  transition: 0.3s;
+}
+
+.panel:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.panel h3 {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.panel input,
+.panel textarea {
+  width: 100%;
+  padding: 10px 16px;
+  margin: 4px 0;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  color: #e0e0e0;
+  border-radius: 12px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: 0.3s;
+}
+
+.panel input:focus,
+.panel textarea:focus {
+  border-color: rgba(255, 255, 255, 0.1);
+  outline: none;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.panel button {
+  margin-top: 6px;
+}
+
+/* ========== MODAL ========== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-box {
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  padding: 32px;
+  max-width: 420px;
+  width: 92%;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+}
+
+.modal-box h2 {
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffffff, #888888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+
+.modal-box label {
+  color: #888888;
+  font-size: 13px;
+  font-weight: 500;
+  display: block;
+  margin-top: 12px;
+}
+
+.modal-box input,
+.modal-box textarea,
+.modal-box select {
+  width: 100%;
+  padding: 10px 16px;
+  margin-top: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  color: #e0e0e0;
+  border-radius: 12px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: 0.3s;
+}
+
+.modal-box input:focus,
+.modal-box textarea:focus,
+.modal-box select:focus {
+  border-color: rgba(255, 255, 255, 0.1);
+  outline: none;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-box select option {
+  background: #1a1a1a;
+}
+
+.close {
+  float: right;
+  background: transparent;
+  color: #444444;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  transition: 0.3s;
+  line-height: 1;
+}
+
+.close:hover {
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+/* ========== TOAST ========== */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e0e0e0;
+  padding: 14px 28px;
+  border-radius: 16px;
+  display: none;
+  z-index: 999;
+  font-size: 14px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ========== DISCORD BANNER ========== */
+.discord-banner {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.discord-banner b {
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.discord-banner span {
+  color: #666666;
+  font-size: 13px;
+  flex: 1;
+}
+
+.discord-banner button {
+  background: rgba(255, 255, 255, 0.04);
+  color: #aaaaaa;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.discord-banner button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .topbar {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+  
+  .search {
+    max-width: 100%;
+    order: 10;
+  }
+  
+  nav {
+    order: 5;
+    justify-content: center;
+  }
+  
+  .hero h1 {
+    font-size: 30px;
+  }
+  
+  .hero {
+    gap: 24px;
+    padding: 10px 0 24px;
+  }
+  
+  .stats {
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .stats div b {
+    font-size: 22px;
+  }
+  
+  .page {
+    padding: 24px 16px 40px;
+  }
+  
+  .vip-hero {
+    padding: 28px 20px;
+  }
+  
+  .vip-hero h2 {
+    font-size: 28px;
+  }
+  
+  .modal-box {
+    padding: 24px;
+  }
+  
+  .discord-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 14px 16px;
+    border-radius: 16px;
+  }
+
+  .filters input {
+    min-width: unset;
+  }
+
+  .filters select {
+    min-width: unset;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand b {
+    font-size: 18px;
+  }
+  
+  .brand small {
+    font-size: 8px;
+  }
+  
+  .hero h1 {
+    font-size: 24px;
+  }
+  
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn-group button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0d0d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #333333, #666666);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #555555, #888888);
+}
+</style>
+</head>
+<body>
+
+<!-- ===== GİRİŞ MODAL ===== -->
+<div id="girisModal">
+  <div class="giris-kutu">
+    <h1>🔐 CYBERTECH</h1>
+    <p id="modalAltYazi">Giriş yap veya kayıt ol</p>
+    
+    <input type="text" id="loginUser" placeholder="Kullanıcı adı">
+    <input type="email" id="loginEmail" placeholder="E-posta (sadece @gmail.com)" style="display:none;">
+    <input type="password" id="loginPass" placeholder="Şifre (min 6 karakter)">
+    <input type="password" id="loginPassTekrar" placeholder="Şifre tekrar" style="display:none;">
+    
+    <div class="captcha" id="captchaAlan">
+      <span class="kod" id="captchaKod">A7kL9p</span>
+      <input type="text" id="captchaCevap" placeholder="Kodu gir">
+      <button class="yenile" id="captchaYenile" onclick="captchaYenile()">⟳</button>
+    </div>
+    
+    <button class="btn-giris" id="modalGirisBtn" onclick="girisYap()">Giriş Yap</button>
+    <button class="btn-giris btn-kayit" id="modalKayitBtn" onclick="kayitOl()" style="display:none;">Kayıt Ol</button>
+    
+    <span class="gecis-link" id="gecisLink" onclick="modalGecis()">Hesabın yok mu? Kayıt ol</span>
+    
+    <div id="modalHata" class="hata"></div>
+    <div id="modalBasari" class="basari"></div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div id="toast"></div>
+
+<!-- ===== MENÜ ÇUBUĞU ===== -->
+<header class="topbar">
+  <!-- Marka alanı C harfi yerine göz logosu gösterir (CSS ile) -->
+  <div class="brand"><span class="brand-mark">C</span><div><b>CYBERTECH</b><small>COMMUNITY HUB</small></div></div>
+  <div class="search"><input id="globalSearch" placeholder="Ara: ürün, dosya, kullanıcı..."><button onclick="searchAll()">Ara</button></div>
+  <nav>
+    <button class="nav-btn active" data-page="home">Ana Sayfa</button>
+    <button class="nav-btn" data-page="menu">/menu</button>
+    <button class="nav-btn" data-page="market">Mağaza</button>
+    <button class="nav-btn" data-page="files">Dosyalar</button>
+    <button class="nav-btn" data-page="osint">OSINT</button>
+    <button class="nav-btn" data-page="vip">VIP</button>
+    <button class="nav-btn" data-page="discordinfo">Discord OSINT</button>
+    <button class="nav-btn" data-page="admin" id="adminNav" style="display:none;">Yetkili</button> <!-- Başlangıçta gizli -->
+  </nav>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span id="menuKullanici" style="color:#aaa;font-size:14px;display:none;"></span>
+    <button class="avatar" id="girisButon" onclick="modalAc('giris')">Giriş</button>
+    <button class="avatar" id="kayitButon" onclick="modalAc('kayit')" style="background:#333;color:#fff;">Kayıt</button>
+    <button class="avatar" id="cikisButon" onclick="cikisYap()" style="background:#c62828;color:#fff;display:none;">Çıkış</button>
+  </div>
+</header>
+
+<!-- ===== ANA İÇERİK ===== -->
+<div id="anaIcerik">
+
+<main>
+<!-- ===== HOME ===== -->
+<section id="home" class="page active">
+  <div class="discord-banner"><b>CYBERTECH Discord</b><span>Topluluğa katıl, duyuruları ve paylaşımları takip et.</span><button onclick="joinDiscord()">discord.gg/cybertech ↗</button></div>
+  <div class="hero">
+    <div><span class="eyebrow">CYBERTECH COMMUNITY</span>
+      <h1>Bilgi, topluluk ve dijital araçlar<br><em>tek merkezde.</em></h1>
+      <p>Topluluk kaynaklarını keşfet, güvenli dosya paylaşımı yap ve açık kaynak araştırma araçlarını kullan.</p>
+      <div class="btn-group">
+        <button class="primary" onclick="go('market')">Mağazayı Keşfet →</button>
+        <button class="discord-btn" onclick="joinDiscord()">Discord Sunucusuna Katıl</button>
+        <button class="ghost" onclick="go('osint')">OSINT Araçları</button>
+      </div>
+    </div>
+    <!-- Radar ikonu ve yazı kaldırıldı, sadece logo gösteriyor -->
+    <div class="hero-card"><div class="radar"></div><b>Topluluk Durumu</b><span>Sistemler aktif</span><small>Güvenli demo ortamı</small></div>
+  </div>
+  <div class="stats">
+    <div><b id="statUsers">0</b><span>Üye</span></div>
+    <div><b id="statProducts">0</b><span>Ürün</span></div>
+    <div><b id="statFiles">0</b><span>Paylaşım</span></div>
+    <div><b id="statUptime">0s</b><span>Uptime</span></div>
+  </div>
+  <div class="section-head"><div><h2>Öne Çıkanlar</h2><p>Topluluğun en çok ilgi gören içerikleri.</p></div><button class="text-btn" onclick="go('market')">Tümünü gör →</button></div>
+  <div id="featured" class="grid cards"></div>
+</section>
+
+<!-- ===== MENU ===== -->
+<section id="menu" class="page">
+  <div class="section-head"><div><span class="eyebrow">CYBERTECH COMMAND CENTER</span><h2>Komut Menüsü</h2><p>Topluluk panelindeki hızlı araçlar.</p></div></div>
+  <div class="tool-grid">
+    <div class="tool"><span>❔</span><h3>/help</h3><p>Komutlar ve kullanım bilgileri.</p><button onclick="showCommand('help')">Çalıştır</button></div>
+    <div class="tool"><span>📡</span><h3>/status</h3><p>Sistem ve demo durumunu görüntüle.</p><button onclick="showCommand('status')">Çalıştır</button><pre id="statusResult"></pre></div>
+    <div class="tool"><span>💻</span><h3>/code</h3><p>Güvenli yazılım geliştirme alanı.</p><button onclick="showCommand('code')">Çalıştır</button></div>
+    <div class="tool"><span>🐍</span><h3>/python</h3><p>Python geliştirme ve hata ayıklama.</p><button onclick="showCommand('python')">Çalıştır</button></div>
+    <div class="tool"><span>🟨</span><h3>/javascript</h3><p>JavaScript geliştirme araçları.</p><button onclick="showCommand('javascript')">Çalıştır</button></div>
+    <div class="tool"><span>🛡️</span><h3>/security</h3><p>Savunma amaçlı güvenlik analizi.</p><button onclick="showCommand('security')">Çalıştır</button></div>
+    <div class="tool"><span>🔬</span><h3>/analyze</h3><p>Sağlanan kodu analiz et.</p><button onclick="showCommand('analyze')">Çalıştır</button></div>
+    <div class="tool"><span>🧰</span><h3>/tools</h3><p>HTTP, Network, JSON, Regex, Encoding ve Debug araçları.</p><button onclick="go('osint')">Araçlara Git</button></div>
+  </div>
+</section>
+
+<!-- ===== MARKET ===== -->
+<section id="market" class="page">
+  <div class="section-head"><div><span class="eyebrow">MARKETPLACE</span><h2>Mağaza</h2><p>Dijital ürünler ve topluluk hizmetleri.</p></div><button class="primary" onclick="openModal('sellModal')">+ Ürün Ekle</button></div>
+  <div class="filters"><input id="productSearch" placeholder="Ürün ara..." oninput="renderProducts()"><select id="category" onchange="renderProducts()"><option value="">Tüm kategoriler</option><option>Araç</option><option>Eğitim</option><option>Tasarım</option><option>Topluluk</option></select><select id="sort" onchange="renderProducts()"><option value="new">Yeni</option><option value="price">Fiyat</option><option value="rating">Puan</option></select></div>
+  <div id="products" class="grid cards"></div>
+</section>
+
+<!-- ===== FILES ===== -->
+<section id="files" class="page">
+  <div class="section-head"><div><span class="eyebrow">COMMUNITY FILES</span><h2>Dosya Paylaşımı</h2><p>Yönetici tarafından oluşturulan kanallarda dosya veya metin paylaş.</p></div><button class="primary" onclick="openModal('shareModal')">+ Paylaşım Oluştur</button></div>
+  <div class="channel-tabs"><button class="active" onclick="setChannel('genel',this)"># genel</button><button onclick="setChannel('arastirma',this)"># araştırma</button><button onclick="setChannel('kaynaklar',this)"># kaynaklar</button><button onclick="setChannel('duyurular',this)"># duyurular</button></div>
+  <div id="fileFeed" class="feed"></div>
+</section>
+
+<!-- ===== OSINT ===== -->
+<section id="osint" class="page">
+  <div class="section-head"><div><span class="eyebrow">PUBLIC-INFO TOOLS</span><h2>OSINT Araçları</h2><p>Yalnızca yetkili olduğun veya herkese açık kaynaklarda araştırma için tasarlanmış araçlar.</p></div></div>
+  <div class="tool-grid">
+    <div class="tool"><span>🔎</span><h3>Web Araması</h3><p>Genel web arama sorgusu oluştur.</p><input id="webq" placeholder="Örn. şirket adı"><button onclick="webSearch()">Aramayı Aç</button></div>
+    <div class="tool"><span>🌐</span><h3>URL Analizi</h3><p>Bir URL'nin temel parçalarını incele.</p><input id="urlq" placeholder="https://ornek.com"><button onclick="analyzeUrl()">Analiz Et</button><pre id="urlResult"></pre></div>
+    <div class="tool"><span>🧩</span><h3>IP / DNS Rehberi</h3><p>Harici servis kullanmadan güvenli sorgu bağlantıları oluştur.</p><input id="dnsq" placeholder="alanadi.com"><button onclick="dnsSearch()">Kaynakları Aç</button></div>
+    <div class="tool"><span>📝</span><h3>Hash Kontrol</h3><p>Yerel olarak metnin SHA-256 özetini hesapla.</p><textarea id="hashq" placeholder="Metin gir..."></textarea><button onclick="makeHash()">SHA-256 Hesapla</button><pre id="hashResult"></pre></div>
+  </div>
+</section>
+
+<!-- ===== VIP ===== -->
+<section id="vip" class="page">
+  <div class="vip-hero"><span class="eyebrow">PREMIUM</span><h2>CYBERTECH VIP</h2><p>Özel topluluk alanları, rozetler ve premium içerik erişimi.</p><div class="vip-price">₺149 <small>/ ay</small></div><button class="primary" onclick="activateVip()">VIP'yi Etkinleştir</button></div>
+  <div class="benefits"><div>✓ VIP rozet</div><div>✓ Özel dosya kanalları</div><div>✓ Premium ürün indirimleri</div><div>✓ Öncelikli topluluk desteği</div></div>
+</section>
+
+<!-- ===== DISCORD OSINT ===== -->
+<section id="discordinfo" class="page">
+  <div class="section-head"><div><span class="eyebrow">DISCORD OSINT</span><h2>Discord OSINT</h2><p>Yetkililer için Discord kullanıcı bilgisi ekleme, arama ve dosya yükleme.</p></div></div>
+
+  <div id="discordContent">
+    <div class="info-ekle" style="margin-bottom:16px;">
+      <h3 style="color:#ffffff;font-size:18px;font-weight:700;">➕ Info Ekle</h3>
+      <input type="text" id="discordUsername" placeholder="Kullanıcı ID (User ID)" style="max-width:200px;display:inline-block;padding:10px 18px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.06);color:#e0e0e0;border-radius:100px;font-size:13px;outline:none;margin-right:8px;">
+      <input type="text" id="discordNote" placeholder="Bilgi" style="max-width:300px;display:inline-block;padding:10px 18px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.06);color:#e0e0e0;border-radius:100px;font-size:13px;outline:none;margin-right:8px;">
+      <button class="primary" onclick="addDiscordInfo()" style="display:inline-block;width:auto;padding:10px 24px;">Ekle</button>
+    </div>
+
+    <div class="discord-file-upload" style="margin-bottom:16px;">
+      <h3 style="color:#ffffff;font-size:18px;font-weight:700;">📎 Dosya Yükle</h3>
+      <input type="file" id="discordFileInput" style="display:inline-block;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.06);color:#e0e0e0;border-radius:100px;padding:8px 16px;font-size:13px;">
+      <button class="primary" onclick="uploadDiscordFile()" style="display:inline-block;width:auto;padding:10px 24px;margin-left:8px;">Yükle</button>
+    </div>
+
+    <div class="info-ara" style="margin-bottom:16px;">
+      <h3 style="color:#ffffff;font-size:18px;font-weight:700;">🔍 Info Ara</h3>
+      <input type="text" id="searchDiscordInput" placeholder="Kullanıcı ID ara..." style="max-width:240px;display:inline-block;padding:10px 18px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.06);color:#e0e0e0;border-radius:100px;font-size:13px;outline:none;margin-right:8px;">
+      <button class="primary" onclick="searchDiscordInfo()" style="display:inline-block;width:auto;padding:10px 24px;">Ara</button>
+      <button class="primary" onclick="listAllDiscordInfo()" style="display:inline-block;width:auto;padding:10px 24px;background:#ffffff;color:#0d0d0d;">Tümünü Listele</button>
+    </div>
+
+    <div id="discordInfoListesi" class="info-listesi">
+      <p style="color:#666;">Henüz kayıt yok.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ADMIN ===== -->
+<section id="admin" class="page">
+  <div class="section-head"><div><span class="eyebrow">STAFF CONSOLE</span><h2>Yetkili Paneli</h2><p>Kullanıcı rolleri, kanallar, ürünler ve paylaşımlar.</p></div></div>
+  <div class="admin-grid">
+    
+    <!-- YENİ KULLANICI ROLÜ PANELİ -->
+    <div class="panel">
+        <h3>Kullanıcı Rolleri</h3>
+        <input id="roleUserName" placeholder="Kullanıcı adı girin">
+        <button class="primary" onclick="checkUserForRole()" style="width:100%; margin-top:8px;">Ekle / Düzenle</button>
+        <div id="roleSetupArea" style="margin-top:10px;"></div>
+        <div id="usersList" style="margin-top:16px;"></div>
+    </div>
+
+    <div class="panel"><h3>Yeni Dosya Kanalı</h3><input id="channelName" placeholder="kanal adı"><button class="primary" onclick="addChannel()">Kanal Oluştur</button><div id="channelsList"></div></div>
+    <div class="panel"><h3>Yönetici Duyurusu</h3><textarea id="announcement" placeholder="Duyuru metni..."></textarea><button class="primary" onclick="postAnnouncement()">Yayınla</button></div>
+    <div class="panel"><h3>Sistem</h3><p>Demo verileri tarayıcıdaki localStorage'da tutulur.</p><button class="danger" onclick="resetDemo()">Demo Verisini Sıfırla</button></div>
+  </div>
+</section>
+</main>
+
+<!-- ===== MODALLER ===== -->
+<div id="profileModal" class="modal"><div class="modal-box"><button class="close" onclick="closeModal('profileModal')">×</button><h2>Profil</h2><label>Kullanıcı adı<input id="profileName" value="CyberTech"></label><label>Rol<select id="profileRole"><option>Üye</option><option>Yetkili</option><option>Yönetici</option></select></label><button class="primary" onclick="saveProfile()">Kaydet</button></div></div>
+<div id="sellModal" class="modal"><div class="modal-box"><button class="close" onclick="closeModal('sellModal')">×</button><h2>Ürün Ekle</h2><label>Ürün adı<input id="sellName"></label><label>Kategori<input id="sellCat" placeholder="Araç"></label><label>Fiyat (₺)<input id="sellPrice" type="number"></label><label>Açıklama<textarea id="sellDesc"></textarea></label><button class="primary" onclick="addProduct()">Yayınla</button></div></div>
+<div id="shareModal" class="modal"><div class="modal-box"><button class="close" onclick="closeModal('shareModal')">×</button><h2>Dosya / Metin Paylaş</h2><label>Başlık<input id="shareTitle"></label><label>İçerik<textarea id="shareText" placeholder="Metin veya dosya açıklaması..."></textarea></label><label>Dosya<input id="shareFile" type="file"></label><button class="primary" onclick="addShare()">Paylaş</button></div></div>
+
+</div> <!-- anaIcerik sonu -->
+
+<script>
+// ==================== OTURUM KONTROLÜ ====================
+function isLoggedIn() {
+  return !!localStorage.getItem('cyberUser');
+}
+
+function girisKontrol() {
+  if (!isLoggedIn()) {
+    document.getElementById('girisModal').classList.add('open');
+    document.getElementById('anaIcerik').style.display = 'none';
+    return false;
+  }
+  return true;
+}
+
+// ==================== YETKİLİ MENÜ GÖRÜNÜRLÜĞÜ ====================
+function updateAdminVisibility() {
+  const adminNav = document.getElementById('adminNav');
+  if (!adminNav) return;
+  
+  let user = JSON.parse(localStorage.getItem('cyberUser'));
+  // Admin her zaman Kurucu olarak görünsün ve Yetkili sekmesini görebilsin
+  if (user && (user.name.toLowerCase() === 'admin' || user.role === 'Yönetici' || user.role === 'Kurucu')) {
+    adminNav.style.display = 'block';
+  } else {
+    adminNav.style.display = 'none';
+  }
+}
+
+// ==================== YASAKLI İSİM KONTROLÜ ====================
+function yasakliIsimMi(isim) {
+    const yasakli = ['admin', 'kurucu', 'yönetici', 'owner', 'developer'];
+    return yasakli.includes(isim.toLowerCase());
+}
+
+// ==================== CAPTCHA (Alfanümerik) ====================
+function captchaYenile() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  let kod = '';
+  for (let i = 0; i < 6; i++) {
+    kod += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  document.getElementById('captchaKod').textContent = kod;
+  document.getElementById('captchaCevap').value = '';
+}
+
+function captchaKontrol() {
+  const girilen = document.getElementById('captchaCevap').value.trim();
+  const dogru = document.getElementById('captchaKod').textContent;
+  return girilen === dogru;
+}
+
+// ==================== GİRİŞ / KAYIT GEÇİŞ ====================
+let mod = 'giris'; // 'giris' veya 'kayit'
+
+function modalAc(tip) {
+  mod = tip;
+  const modal = document.getElementById('girisModal');
+  modal.classList.add('open');
+  document.getElementById('modalHata').style.display = 'none';
+  document.getElementById('modalBasari').style.display = 'none';
+  
+  if (tip === 'kayit') {
+    document.getElementById('modalAltYazi').textContent = 'Kayıt ol';
+    document.getElementById('modalGirisBtn').style.display = 'none';
+    document.getElementById('modalKayitBtn').style.display = 'block';
+    document.getElementById('loginEmail').style.display = 'block';
+    document.getElementById('loginPassTekrar').style.display = 'block';
+    document.getElementById('gecisLink').textContent = 'Zaten hesabın var mı? Giriş yap';
+    document.getElementById('captchaAlan').style.display = 'flex';
+    captchaYenile();
+  } else {
+    document.getElementById('modalAltYazi').textContent = 'Giriş yap';
+    document.getElementById('modalGirisBtn').style.display = 'block';
+    document.getElementById('modalKayitBtn').style.display = 'none';
+    document.getElementById('loginEmail').style.display = 'none';
+    document.getElementById('loginPassTekrar').style.display = 'none';
+    document.getElementById('gecisLink').textContent = 'Hesabın yok mu? Kayıt ol';
+    document.getElementById('captchaAlan').style.display = 'flex';
+    captchaYenile();
+  }
+}
+
+function modalGecis() {
+  if (mod === 'giris') {
+    modalAc('kayit');
+  } else {
+    modalAc('giris');
+  }
+}
+
+// ==================== GİRİŞ / KAYIT ====================
+function girisYap() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  const hata = document.getElementById('modalHata');
+  
+  if (!user || !pass) { hata.textContent = '⚠️ Tüm alanları doldurun.'; hata.style.display = 'block'; return; }
+  if (!captchaKontrol()) { hata.textContent = '⚠️ Captcha kodu yanlış!'; hata.style.display = 'block'; captchaYenile(); return; }
+  
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  const found = users.find(u => u.name === user && u.password === pass);
+  if (found) {
+    
+    // Admin hesabı her zaman Kurucu olsun
+    if (found.name.toLowerCase() === 'admin') {
+        found.role = 'Kurucu';
+        let usersList = JSON.parse(localStorage.getItem('users')) || [];
+        let uIndex = usersList.findIndex(u => u.name === found.name);
+        if (uIndex > -1) {
+            usersList[uIndex].role = 'Kurucu';
+            localStorage.setItem('users', JSON.stringify(usersList));
+        }
+    }
+
+    localStorage.setItem('cyberUser', JSON.stringify({name: user, role: found.role || 'Üye'}));
+    document.getElementById('girisModal').classList.remove('open');
+    document.getElementById('anaIcerik').style.display = 'block';
+    document.getElementById('menuKullanici').textContent = user;
+    document.getElementById('menuKullanici').style.display = 'inline';
+    document.getElementById('girisButon').style.display = 'none';
+    document.getElementById('kayitButon').style.display = 'none';
+    document.getElementById('cikisButon').style.display = 'inline-flex';
+    document.getElementById('menuName').textContent = user;
+    document.getElementById('menuRole').textContent = found.role || 'Üye';
+    updateStats();
+    updateAdminVisibility(); // Menü görünürlüğünü güncelle
+    showToast('✅ Hoş geldin, ' + user + '!');
+  } else {
+    hata.textContent = '❌ Kullanıcı adı veya şifre hatalı!';
+    hata.style.display = 'block';
+    captchaYenile();
+  }
+}
+
+function kayitOl() {
+  const user = document.getElementById('loginUser').value.trim();
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  const passTekrar = document.getElementById('loginPassTekrar').value.trim();
+  const hata = document.getElementById('modalHata');
+  const basari = document.getElementById('modalBasari');
+
+  if (!user || !email || !pass || !passTekrar) {
+    hata.textContent = '⚠️ Tüm alanları doldurun.';
+    hata.style.display = 'block'; return;
+  }
+  if (!email.endsWith('@gmail.com')) {
+    hata.textContent = '⚠️ Sadece @gmail.com adresleri kabul edilir.';
+    hata.style.display = 'block'; return;
+  }
+  if (pass.length < 6) {
+    hata.textContent = '⚠️ Şifre en az 6 karakter olmalı.';
+    hata.style.display = 'block'; return;
+  }
+  if (pass !== passTekrar) {
+    hata.textContent = '⚠️ Şifreler eşleşmiyor.';
+    hata.style.display = 'block'; return;
+  }
+  
+  // YASAKLI İSİM KONTROLÜ
+  if (yasakliIsimMi(user)) {
+      hata.textContent = '⚠️ Bu kullanıcı adı alınamaz!';
+      hata.style.display = 'block';
+      return;
+  }
+  
+  if (!captchaKontrol()) {
+    hata.textContent = '⚠️ Captcha kodu yanlış!';
+    hata.style.display = 'block';
+    captchaYenile();
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  if (users.find(u => u.name === user)) {
+    hata.textContent = '⚠️ Bu kullanıcı adı zaten alınmış.';
+    hata.style.display = 'block'; return;
+  }
+  if (users.find(u => u.email === email)) {
+    hata.textContent = '⚠️ Bu e-posta zaten kayıtlı.';
+    hata.style.display = 'block'; return;
+  }
+
+  users.push({ name: user, email: email, password: pass, role: 'Üye' });
+  localStorage.setItem('users', JSON.stringify(users));
+  localStorage.setItem('cyberUser', JSON.stringify({name: user, role: 'Üye'}));
+  document.getElementById('girisModal').classList.remove('open');
+  document.getElementById('anaIcerik').style.display = 'block';
+  document.getElementById('menuKullanici').textContent = user;
+  document.getElementById('menuKullanici').style.display = 'inline';
+  document.getElementById('girisButon').style.display = 'none';
+  document.getElementById('kayitButon').style.display = 'none';
+  document.getElementById('cikisButon').style.display = 'inline-flex';
+  document.getElementById('menuName').textContent = user;
+  document.getElementById('menuRole').textContent = 'Üye';
+  updateStats();
+  updateAdminVisibility(); // Menü görünürlüğünü güncelle
+  basari.textContent = '✅ Kayıt başarılı!';
+  basari.style.display = 'block';
+  showToast('✅ Hoş geldin, ' + user + '!');
+}
+
+function cikisYap() {
+  localStorage.removeItem('cyberUser');
+  document.getElementById('anaIcerik').style.display = 'none';
+  document.getElementById('menuKullanici').style.display = 'none';
+  document.getElementById('girisButon').style.display = 'inline-flex';
+  document.getElementById('kayitButon').style.display = 'inline-flex';
+  document.getElementById('cikisButon').style.display = 'none';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginEmail').value = '';
+  document.getElementById('loginPassTekrar').value = '';
+  document.getElementById('captchaCevap').value = '';
+  document.getElementById('modalHata').style.display = 'none';
+  document.getElementById('modalBasari').style.display = 'none';
+  showToast('🚪 Çıkış yapıldı.');
+}
+
+// ==================== TEMEL FONKSİYONLAR ====================
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+function go(page){
+  if (!girisKontrol()) return;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.nav-btn[data-page="${page}"]`)?.classList.add('active');
+}
+document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+function toggleUserMenu(){document.getElementById('userMenu').classList.toggle('hidden');}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function joinDiscord(){window.open('https://discord.gg/cybertech','_blank');}
+function searchAll(){const q=document.getElementById('globalSearch').value.trim();if(!q)return showToast('🔍 Arama terimi gir.');showToast(`🔍 "${q}" aranıyor... (demo)`);}
+
+// ==================== İSTATİSTİKLER ====================
+function updateStats() {
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  if (!Array.isArray(users)) users = [];
+  document.getElementById('statUsers').textContent = users.length;
+
+  let products = JSON.parse(localStorage.getItem('products')) || [];
+  if (!Array.isArray(products)) products = [];
+  document.getElementById('statProducts').textContent = products.length;
+
+  let shares = JSON.parse(localStorage.getItem('shares')) || [];
+  if (!Array.isArray(shares)) shares = [];
+  document.getElementById('statFiles').textContent = shares.length;
+
+  if (!window._startTime) window._startTime = Date.now();
+  const elapsed = Math.floor((Date.now() - window._startTime) / 1000);
+  let uptimeStr = '';
+  if (elapsed < 60) uptimeStr = elapsed + 's';
+  else if (elapsed < 3600) uptimeStr = Math.floor(elapsed/60) + 'm';
+  else uptimeStr = Math.floor(elapsed/3600) + 'h';
+  document.getElementById('statUptime').textContent = uptimeStr;
+}
+setInterval(updateStats, 5000);
+
+// ==================== YETKİLİ PANELİ - KULLANICI ROLLERİ ====================
+function renderUsersList() {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const listDiv = document.getElementById('usersList');
+    if (users.length === 0) {
+        listDiv.innerHTML = '<p style="color:#666;">Henüz kullanıcı yok.</p>';
+        return;
+    }
+    let html = '';
+    users.forEach(u => {
+        html += `<div style="display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <span style="color:#fff;">${u.name}</span>
+                    <span style="color:#f5b81b;font-weight:bold;">${u.role || 'Üye'}</span>
+                 </div>`;
+    });
+    listDiv.innerHTML = html;
+}
+
+function checkUserForRole() {
+    const nameInput = document.getElementById('roleUserName').value.trim();
+    const area = document.getElementById('roleSetupArea');
+    
+    if (!nameInput) { showToast('⚠️ Kullanıcı adı girin.'); return; }
+    
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.name.toLowerCase() === nameInput.toLowerCase());
+    
+    if (!user) {
+        area.innerHTML = '<p style="color:#ef4444;">❌ Böyle bir kullanıcı adı yok.</p>';
+        return;
+    }
+    
+    // Kullanıcı bulunduysa yetki seçeneklerini göster
+    area.innerHTML = `
+        <p style="color:#888; margin-bottom:8px;">Kullanıcı bulundu: <b style="color:#fff;">${user.name}</b></p>
+        <select id="roleSelect" style="width:100%; padding:8px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); color:#e0e0e0; border-radius:8px;">
+            <option value="Üye" ${user.role === 'Üye' ? 'selected' : ''}>Üye</option>
+            <option value="Yetkili" ${user.role === 'Yetkili' ? 'selected' : ''}>Yetkili</option>
+            <option value="Yönetici" ${user.role === 'Yönetici' ? 'selected' : ''}>Yönetici</option>
+            <option value="Kurucu" ${user.role === 'Kurucu' ? 'selected' : ''}>Kurucu</option>
+        </select>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+            <button class="primary" onclick="updateUserRole('${user.name}')" style="flex:1;">Yetki Ver</button>
+            <button class="danger" onclick="removeUserRole('${user.name}')" style="flex:1;">Yetki Kaldır</button>
+        </div>
+    `;
+}
+
+function updateUserRole(username) {
+    const newRole = document.getElementById('roleSelect').value;
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.name === username);
+    
+    if (user) {
+        user.role = newRole;
+        localStorage.setItem('users', JSON.stringify(users));
+        showToast(`✅ ${username} kullanıcısına ${newRole} yetkisi verildi.`);
+        document.getElementById('roleSetupArea').innerHTML = '';
+        renderUsersList();
+    }
+}
+
+function removeUserRole(username) {
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.name === username);
+    
+    if (user) {
+        user.role = 'Üye';
+        localStorage.setItem('users', JSON.stringify(users));
+        showToast(`🔄 ${username} kullanıcısının yetkisi kaldırıldı.`);
+        document.getElementById('roleSetupArea').innerHTML = '';
+        renderUsersList();
+    }
+}
+
+// ==================== DİSCORD OSINT ====================
+let discordData = JSON.parse(localStorage.getItem('discordInfoList')) || [];
+
+function addDiscordInfo(){
+  const username = document.getElementById('discordUsername').value.trim();
+  const note = document.getElementById('discordNote').value.trim();
+  if(!username){ showToast('⚠️ Kullanıcı ID girmelisin!'); return; }
+  discordData.push({ username, note: note || 'Belirtilmemiş', date: new Date().toLocaleString() });
+  localStorage.setItem('discordInfoList', JSON.stringify(discordData));
+  document.getElementById('discordUsername').value = '';
+  document.getElementById('discordNote').value = '';
+  listAllDiscordInfo();
+  showToast('✅ Info eklendi.');
+  updateStats();
+}
+
+function listAllDiscordInfo(){
+  const listDiv = document.getElementById('discordInfoListesi');
+  if(discordData.length === 0){ listDiv.innerHTML = '<p style="color:#666;">Henüz kayıt yok.</p>'; return; }
+  let html = '';
+  discordData.forEach((item, index) => {
+    let fileHtml = '';
+    if(item.fileName && item.fileData){
+      fileHtml = ` <a class="file-link" href="${item.fileData}" download="${item.fileName}" style="color:#4caf50;text-decoration:underline;cursor:pointer;margin-left:8px;">📎 ${item.fileName}</a>`;
+    }
+    html += `<div class="info-item" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="color:#f5b81b;font-weight:700;min-width:120px;">${item.username}</span>
+              <span style="color:#ccc;flex:1;">${item.note}</span>
+              <span style="color:#666;font-size:12px;">${item.date}</span>
+              ${fileHtml}
+              <button onclick="deleteDiscordInfo(${index})" style="background:#c62828;color:#fff;border:none;border-radius:4px;padding:2px 10px;font-size:12px;cursor:pointer;">Sil</button>
+            </div>`;
+  });
+  listDiv.innerHTML = html;
+}
+
+function searchDiscordInfo(){
+  const query = document.getElementById('searchDiscordInput').value.trim().toLowerCase();
+  if(!query){ listAllDiscordInfo(); return; }
+  const filtered = discordData.filter(item => item.username.toLowerCase().includes(query));
+  const listDiv = document.getElementById('discordInfoListesi');
+  if(filtered.length === 0){ listDiv.innerHTML = '<p style="color:#888;">🔍 Sonuç bulunamadı.</p>'; return; }
+  let html = '';
+  filtered.forEach((item, index) => {
+    let fileHtml = '';
+    if(item.fileName && item.fileData){
+      fileHtml = ` <a class="file-link" href="${item.fileData}" download="${item.fileName}" style="color:#4caf50;text-decoration:underline;cursor:pointer;margin-left:8px;">📎 ${item.fileName}</a>`;
+    }
+    html += `<div class="info-item" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="color:#f5b81b;font-weight:700;min-width:120px;">${item.username}</span>
+              <span style="color:#ccc;flex:1;">${item.note}</span>
+              <span style="color:#666;font-size:12px;">${item.date}</span>
+              ${fileHtml}
+              <button onclick="deleteDiscordInfo(${index})" style="background:#c62828;color:#fff;border:none;border-radius:4px;padding:2px 10px;font-size:12px;cursor:pointer;">Sil</button>
+            </div>`;
+  });
+  listDiv.innerHTML = html;
+}
+
+function deleteDiscordInfo(index){
+  if(confirm('Bu kaydı silmek istediğine emin misin?')){
+    discordData.splice(index, 1);
+    localStorage.setItem('discordInfoList', JSON.stringify(discordData));
+    listAllDiscordInfo();
+    showToast('🗑️ Silindi.');
+    updateStats();
+  }
+}
+
+function uploadDiscordFile(){
+  const fileInput = document.getElementById('discordFileInput');
+  if(!fileInput.files || fileInput.files.length === 0){
+    showToast('⚠️ Lütfen bir dosya seç.');
+    return;
+  }
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const base64 = e.target.result;
+    discordData.push({
+      username: 'DOSYA',
+      note: file.name,
+      date: new Date().toLocaleString(),
+      fileName: file.name,
+      fileData: base64
+    });
+    localStorage.setItem('discordInfoList', JSON.stringify(discordData));
+    fileInput.value = '';
+    listAllDiscordInfo();
+    showToast('✅ Dosya yüklendi.');
+    updateStats();
+  };
+  reader.readAsDataURL(file);
+}
+
+// ==================== DİĞER FONKSİYONLAR ====================
+function showCommand(cmd){ if(cmd==='status'){ document.getElementById('statusResult').textContent='Sistem durumu: ✅ Çevrimiçi (demo)'; } else showToast(`✅ /${cmd} çalıştırıldı (demo).`); }
+function webSearch(){ const q=document.getElementById('webq').value.trim(); if(q) window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`,'_blank'); else showToast('⚠️ Arama terimi gir.'); }
+function analyzeUrl(){ const u=document.getElementById('urlq').value.trim(); if(!u){ showToast('⚠️ URL gir.'); return; } try{ const url=new URL(u); document.getElementById('urlResult').textContent=`Protokol: ${url.protocol}\nHost: ${url.hostname}\nYol: ${url.pathname}`; }catch(e){ document.getElementById('urlResult').textContent='❌ Geçersiz URL.'; } }
+function dnsSearch(){ const q=document.getElementById('dnsq').value.trim(); if(q) window.open(`https://www.whatsmydns.net/#A/${q}`,'_blank'); else showToast('⚠️ Alan adı gir.'); }
+function makeHash(){ const txt=document.getElementById('hashq').value; if(!txt){ showToast('⚠️ Metin gir.'); return; } async function hash(){ const enc=new TextEncoder().encode(txt); const buf=await crypto.subtle.digest('SHA-256', enc); const hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); document.getElementById('hashResult').textContent=hex; } hash(); }
+function activateVip(){ showToast('🎉 VIP demo modu etkinleştirildi (yalnızca görsel).'); }
+
+function addProduct(){
+  const name = document.getElementById('sellName').value.trim();
+  const cat = document.getElementById('sellCat').value.trim();
+  const price = document.getElementById('sellPrice').value;
+  const desc = document.getElementById('sellDesc').value.trim();
+  if(!name){ showToast('⚠️ Ürün adı gerekli.'); return; }
+  let products = JSON.parse(localStorage.getItem('products')) || [];
+  products.push({ name, cat: cat || 'Genel', price: parseFloat(price) || 0, desc: desc || 'Açıklama yok' });
+  localStorage.setItem('products', JSON.stringify(products));
+  closeModal('sellModal');
+  renderProducts();
+  updateStats();
+  showToast('✅ Ürün eklendi.');
+}
+
+function addShare(){
+  const title = document.getElementById('shareTitle').value.trim();
+  const text = document.getElementById('shareText').value.trim();
+  const fileInput = document.getElementById('shareFile');
+  if(!title && !text && !fileInput.files.length){ showToast('⚠️ En az bir şey girin.'); return; }
+  let shares = JSON.parse(localStorage.getItem('shares')) || [];
+  shares.push({ title: title || 'Paylaşım', text: text || 'İçerik yok', date: new Date().toLocaleString() });
+  localStorage.setItem('shares', JSON.stringify(shares));
+  closeModal('shareModal');
+  renderFileFeed();
+  updateStats();
+  showToast('✅ Paylaşım oluşturuldu.');
+}
+
+function setChannel(ch,btn){ document.querySelectorAll('.channel-tabs button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); showToast(`📂 #${ch} kanalı seçildi.`); }
+function resetDemo(){ if(confirm('Tüm demo verileri sıfırlansın mı?')){ localStorage.clear(); location.reload(); } }
+
+function saveProfile(){
+  const name = document.getElementById('profileName').value.trim() || 'Misafir';
+  const role = document.getElementById('profileRole').value;
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+  if (!users.find(u => u.name === name)) {
+    users.push({ name, role });
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+  localStorage.setItem('cyberUser', JSON.stringify({name, role}));
+  document.getElementById('menuName').textContent = name;
+  document.getElementById('menuRole').textContent = role;
+  closeModal('profileModal');
+  updateStats();
+  showToast('✅ Profil kaydedildi.');
+}
+
+function logout(){
+  localStorage.removeItem('cyberUser');
+  document.getElementById('menuName').textContent = 'Misafir';
+  document.getElementById('menuRole').textContent = 'Ziyaretçi';
+  showToast('🚪 Çıkış yapıldı.');
+}
+
+// ==================== RENDER FONKSİYONLARI ====================
+function renderProducts(){
+  const products = JSON.parse(localStorage.getItem('products') || '[]');
+  const container = document.getElementById('products');
+  if(!container) return;
+  const search = document.getElementById('productSearch')?.value.toLowerCase() || '';
+  const cat = document.getElementById('category')?.value || '';
+  const sort = document.getElementById('sort')?.value || 'new';
+  let filtered = products.filter(p => p.name.toLowerCase().includes(search) && (cat==='' || p.cat===cat));
+  if(sort==='price') filtered.sort((a,b)=>a.price-b.price);
+  else if(sort==='rating') filtered.sort(()=>Math.random()-0.5);
+  if(filtered.length===0){ container.innerHTML='<div class="card"><p style="color:#666;">Ürün bulunamadı.</p></div>'; return; }
+  container.innerHTML = filtered.map(p => `<div class="card"><h3>${p.name}</h3><p>${p.desc||''}</p><div class="price" style="color:#ffffff;font-weight:700;font-size:18px;margin-top:8px;">₺${p.price}</div><small style="color:#444444;font-size:12px;display:block;margin-top:8px;">${p.cat||''}</small></div>`).join('');
+}
+
+function renderFileFeed(){
+  const feed = document.getElementById('fileFeed');
+  if(!feed) return;
+  const shares = JSON.parse(localStorage.getItem('shares') || '[]');
+  if(shares.length===0){ feed.innerHTML='<div class="feed-item" style="color:#666;">Henüz paylaşım yok.</div>'; return; }
+  feed.innerHTML = shares.slice(-5).reverse().map(s => `<div class="feed-item"><h4>${s.title||'Paylaşım'}</h4><p>${s.text||''}</p><small>${s.date||''}</small></div>`).join('');
+}
+
+// ==================== BAŞLANGIÇ ====================
+(function init(){
+  if (isLoggedIn()) {
+    const user = JSON.parse(localStorage.getItem('cyberUser'));
+    
+    // Admin hesabı her zaman Kurucu olsun
+    if (user.name.toLowerCase() === 'admin') {
+        user.role = 'Kurucu';
+        localStorage.setItem('cyberUser', JSON.stringify(user));
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let uIndex = users.findIndex(u => u.name === user.name);
+        if (uIndex > -1) {
+            users[uIndex].role = 'Kurucu';
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+    }
+
+    document.getElementById('girisModal').classList.remove('open');
+    document.getElementById('anaIcerik').style.display = 'block';
+    document.getElementById('menuKullanici').textContent = user.name;
+    document.getElementById('menuKullanici').style.display = 'inline';
+    document.getElementById('girisButon').style.display = 'none';
+    document.getElementById('kayitButon').style.display = 'none';
+    document.getElementById('cikisButon').style.display = 'inline-flex';
+    document.getElementById('menuName').textContent = user.name;
+    document.getElementById('menuRole').textContent = user.role || 'Üye';
+  } else {
+    document.getElementById('girisModal').classList.add('open');
+    document.getElementById('anaIcerik').style.display = 'none';
+    document.getElementById('girisButon').style.display = 'inline-flex';
+    document.getElementById('kayitButon').style.display = 'inline-flex';
+    document.getElementById('cikisButon').style.display = 'none';
+    modalAc('giris');
+  }
+
+  if(!localStorage.getItem('products')){
+    const products = [
+      { name:'Sızma Testi Aracı', cat:'Araç', price:99, desc:'Güvenlik açığı tarama aracı (demo).' },
+      { name:'Python Eğitimi', cat:'Eğitim', price:49, desc:'Temel ve ileri seviye Python.' },
+      { name:'CyberTech Rozeti', cat:'Topluluk', price:29, desc:'Özel topluluk rozeti.' }
+    ];
+    localStorage.setItem('products', JSON.stringify(products));
+  }
+  renderProducts();
+  renderFileFeed();
+  renderUsersList();
+  updateStats();
+  updateAdminVisibility(); // Menü görünürlüğünü başlangıçta kontrol et
+})();
+</script>
+</body>
+</html>
