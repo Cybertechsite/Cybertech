@@ -192,10 +192,9 @@ body {
   text-decoration: none;
 }
 
-/* ==== DEĞİŞTİRİLEN LOGO ALANI (SOL ÜST) ==== */
 .brand-mark {
   background-color: transparent;
-  background-image: url('cybertech.png'); /* Göz logosu dosya adı */
+  background-image: url('cybertech.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -207,7 +206,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%; /* Yuvarlak yapıldı */
+  border-radius: 50%;
   transition: 0.3s;
 }
 
@@ -491,13 +490,12 @@ nav {
   margin-top: 6px;
 }
 
-/* ==== DEĞİŞTİRİLEN DURUM KARTI ALANI (SAĞ ALT) ==== */
 .radar {
   width: 56px;
   height: 56px;
-  border-radius: 50%; /* Yuvarlak yapıldı */
+  border-radius: 50%;
   background-color: transparent;
-  background-image: url('cybertech.png'); /* Göz logosu dosya adı */
+  background-image: url('cybertech.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -1331,7 +1329,6 @@ button {
 
 <!-- ===== MENÜ ÇUBUĞU ===== -->
 <header class="topbar">
-  <!-- Marka alanı C harfi yerine göz logosu gösterir (CSS ile) -->
   <div class="brand"><span class="brand-mark">C</span><div><b>CYBERTECH</b><small>COMMUNITY HUB</small></div></div>
   <div class="search"><input id="globalSearch" placeholder="Ara: ürün, dosya, kullanıcı..."><button onclick="searchAll()">Ara</button></div>
   <nav>
@@ -1341,8 +1338,9 @@ button {
     <button class="nav-btn" data-page="files">Dosyalar</button>
     <button class="nav-btn" data-page="osint">OSINT</button>
     <button class="nav-btn" data-page="vip">VIP</button>
+    <button class="nav-btn" data-page="jsarac">JS Araçları</button>
     <button class="nav-btn" data-page="discordinfo">Discord OSINT</button>
-    <button class="nav-btn" data-page="admin" id="adminNav" style="display:none;">Yetkili</button> <!-- Başlangıçta gizli -->
+    <button class="nav-btn" data-page="admin" id="adminNav" style="display:none;">Yetkili</button>
   </nav>
   <div style="display:flex;gap:8px;align-items:center;">
     <span id="menuKullanici" style="color:#aaa;font-size:14px;display:none;"></span>
@@ -1369,7 +1367,6 @@ button {
         <button class="ghost" onclick="go('osint')">OSINT Araçları</button>
       </div>
     </div>
-    <!-- Radar ikonu ve yazı kaldırıldı, sadece logo gösteriyor -->
     <div class="hero-card"><div class="radar"></div><b>Topluluk Durumu</b><span>Sistemler aktif</span><small>Güvenli demo ortamı</small></div>
   </div>
   <div class="stats">
@@ -1422,6 +1419,66 @@ button {
   </div>
 </section>
 
+<!-- ===== JS ARAÇLARI ===== -->
+<section id="jsarac" class="page">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">JAVASCRIPT TOOLS</span>
+      <h2>JS Araçları</h2>
+      <p>Tarayıcıda çalışan saf JavaScript araçları. Vanilla JS ile geliştirilmiştir.</p>
+    </div>
+  </div>
+  <div class="tool-grid">
+    <div class="tool">
+      <span>🧮</span>
+      <h3>Hesap Makinesi</h3>
+      <p>Basit JavaScript hesap makinesi.</p>
+      <input id="jsHesapInput" placeholder="Örn: 5+3*2">
+      <button onclick="jsHesap()">Hesapla</button>
+      <pre id="jsHesapSonuc"></pre>
+    </div>
+    <div class="tool">
+      <span>📅</span>
+      <h3>Yaş Hesaplayıcı</h3>
+      <p>Doğum yılını gir, yaşını hesapla.</p>
+      <input id="jsYasInput" placeholder="Örn: 2000">
+      <button onclick="jsYas()">Hesapla</button>
+      <pre id="jsYasSonuc"></pre>
+    </div>
+    <div class="tool">
+      <span>🔢</span>
+      <h3>Sayı Tahmin Oyunu</h3>
+      <p>1-100 arası bir sayı tuttum, tahmin et!</p>
+      <input id="jsTahminInput" placeholder="Tahminin">
+      <button onclick="jsTahmin()">Tahmin Et</button>
+      <pre id="jsTahminSonuc"></pre>
+    </div>
+    <div class="tool">
+      <span>🔤</span>
+      <h3>Metin Ters Çevirme</h3>
+      <p>Girdiğin metni tersine çevirir.</p>
+      <input id="jsTersInput" placeholder="Metin gir">
+      <button onclick="jsTers()">Ters Çevir</button>
+      <pre id="jsTersSonuc"></pre>
+    </div>
+    <div class="tool">
+      <span>🎲</span>
+      <h3>Zar At</h3>
+      <p>Rastgele zar atar (1-6).</p>
+      <button onclick="jsZar()">Zar At</button>
+      <pre id="jsZarSonuc"></pre>
+    </div>
+    <div class="tool">
+      <span>⏱️</span>
+      <h3>Geri Sayım</h3>
+      <p>Basit geri sayım sayacı.</p>
+      <input id="jsSayimInput" type="number" placeholder="Saniye gir" min="1">
+      <button onclick="jsSayim()">Başlat</button>
+      <pre id="jsSayimSonuc"></pre>
+    </div>
+  </div>
+</section>
+
 <!-- ===== VIP ===== -->
 <section id="vip" class="page">
   <div class="vip-hero"><span class="eyebrow">PREMIUM</span><h2>CYBERTECH VIP</h2><p>Özel topluluk alanları, rozetler ve premium içerik erişimi.</p><div class="vip-price">₺149 <small>/ ay</small></div><button class="primary" onclick="activateVip()">VIP'yi Etkinleştir</button></div>
@@ -1464,7 +1521,6 @@ button {
   <div class="section-head"><div><span class="eyebrow">STAFF CONSOLE</span><h2>Yetkili Paneli</h2><p>Kullanıcı rolleri, kanallar, ürünler ve paylaşımlar.</p></div></div>
   <div class="admin-grid">
     
-    <!-- YENİ KULLANICI ROLÜ PANELİ -->
     <div class="panel">
         <h3>Kullanıcı Rolleri</h3>
         <input id="roleUserName" placeholder="Kullanıcı adı girin">
@@ -1508,8 +1564,7 @@ function updateAdminVisibility() {
   if (!adminNav) return;
   
   let user = JSON.parse(localStorage.getItem('cyberUser'));
-  // Admin her zaman Kurucu olarak görünsün ve Yetkili sekmesini görebilsin
-  if (user && (user.name.toLowerCase() === 'admin' || user.role === 'Yönetici' || user.role === 'Kurucu')) {
+  if (user && (user.name.toLowerCase() === 'admin' || user.role === 'Yönetici' || user.role === 'Kurucu' || user.role === 'Yetkili')) {
     adminNav.style.display = 'block';
   } else {
     adminNav.style.display = 'none';
@@ -1518,7 +1573,7 @@ function updateAdminVisibility() {
 
 // ==================== YASAKLI İSİM KONTROLÜ ====================
 function yasakliIsimMi(isim) {
-    const yasakli = ['admin', 'kurucu', 'yönetici', 'owner', 'developer'];
+    const yasakli = ['kurucu', 'yönetici', 'owner', 'developer'];
     return yasakli.includes(isim.toLowerCase());
 }
 
@@ -1540,7 +1595,7 @@ function captchaKontrol() {
 }
 
 // ==================== GİRİŞ / KAYIT GEÇİŞ ====================
-let mod = 'giris'; // 'giris' veya 'kayit'
+let mod = 'giris';
 
 function modalAc(tip) {
   mod = tip;
@@ -1591,7 +1646,7 @@ function girisYap() {
   const found = users.find(u => u.name === user && u.password === pass);
   if (found) {
     
-    // Admin hesabı her zaman Kurucu olsun
+    // admin hesabı her zaman Kurucu olsun
     if (found.name.toLowerCase() === 'admin') {
         found.role = 'Kurucu';
         let usersList = JSON.parse(localStorage.getItem('users')) || [];
@@ -1613,7 +1668,7 @@ function girisYap() {
     document.getElementById('menuName').textContent = user;
     document.getElementById('menuRole').textContent = found.role || 'Üye';
     updateStats();
-    updateAdminVisibility(); // Menü görünürlüğünü güncelle
+    updateAdminVisibility();
     showToast('✅ Hoş geldin, ' + user + '!');
   } else {
     hata.textContent = '❌ Kullanıcı adı veya şifre hatalı!';
@@ -1647,7 +1702,6 @@ function kayitOl() {
     hata.style.display = 'block'; return;
   }
   
-  // YASAKLI İSİM KONTROLÜ
   if (yasakliIsimMi(user)) {
       hata.textContent = '⚠️ Bu kullanıcı adı alınamaz!';
       hata.style.display = 'block';
@@ -1671,9 +1725,15 @@ function kayitOl() {
     hata.style.display = 'block'; return;
   }
 
-  users.push({ name: user, email: email, password: pass, role: 'Üye' });
+  // admin isimli kullanıcı kayıt olursa otomatik Kurucu
+  let role = 'Üye';
+  if (user.toLowerCase() === 'admin') {
+    role = 'Kurucu';
+  }
+
+  users.push({ name: user, email: email, password: pass, role: role });
   localStorage.setItem('users', JSON.stringify(users));
-  localStorage.setItem('cyberUser', JSON.stringify({name: user, role: 'Üye'}));
+  localStorage.setItem('cyberUser', JSON.stringify({name: user, role: role}));
   document.getElementById('girisModal').classList.remove('open');
   document.getElementById('anaIcerik').style.display = 'block';
   document.getElementById('menuKullanici').textContent = user;
@@ -1682,9 +1742,9 @@ function kayitOl() {
   document.getElementById('kayitButon').style.display = 'none';
   document.getElementById('cikisButon').style.display = 'inline-flex';
   document.getElementById('menuName').textContent = user;
-  document.getElementById('menuRole').textContent = 'Üye';
+  document.getElementById('menuRole').textContent = role;
   updateStats();
-  updateAdminVisibility(); // Menü görünürlüğünü güncelle
+  updateAdminVisibility();
   basari.textContent = '✅ Kayıt başarılı!';
   basari.style.display = 'block';
   showToast('✅ Hoş geldin, ' + user + '!');
@@ -1697,6 +1757,7 @@ function cikisYap() {
   document.getElementById('girisButon').style.display = 'inline-flex';
   document.getElementById('kayitButon').style.display = 'inline-flex';
   document.getElementById('cikisButon').style.display = 'none';
+  document.getElementById('adminNav').style.display = 'none';
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
   document.getElementById('loginEmail').value = '';
@@ -1747,10 +1808,80 @@ function updateStats() {
 }
 setInterval(updateStats, 5000);
 
+// ==================== JS ARAÇLARI ====================
+function jsHesap() {
+  const girdi = document.getElementById('jsHesapInput').value.trim();
+  if (!girdi) { document.getElementById('jsHesapSonuc').textContent = '⚠️ Bir işlem gir.'; return; }
+  try {
+    const sonuc = Function('"use strict"; return (' + girdi + ')')();
+    document.getElementById('jsHesapSonuc').textContent = '📊 Sonuç: ' + sonuc;
+  } catch (e) {
+    document.getElementById('jsHesapSonuc').textContent = '❌ Geçersiz işlem.';
+  }
+}
+
+function jsYas() {
+  const yil = parseInt(document.getElementById('jsYasInput').value.trim());
+  if (!yil || yil < 1900 || yil > new Date().getFullYear()) {
+    document.getElementById('jsYasSonuc').textContent = '⚠️ Geçerli bir yıl gir.';
+    return;
+  }
+  const yas = new Date().getFullYear() - yil;
+  document.getElementById('jsYasSonuc').textContent = '🎂 Yaşın: ' + yas;
+}
+
+let jsTahminSayi = Math.floor(Math.random() * 100) + 1;
+function jsTahmin() {
+  const tahmin = parseInt(document.getElementById('jsTahminInput').value.trim());
+  const sonuc = document.getElementById('jsTahminSonuc');
+  if (!tahmin) { sonuc.textContent = '⚠️ Bir sayı gir.'; return; }
+  if (tahmin === jsTahminSayi) {
+    sonuc.textContent = '🎉 Doğru! Sayı ' + jsTahminSayi + ' idi. Yeni sayı tuttum!';
+    jsTahminSayi = Math.floor(Math.random() * 100) + 1;
+  } else if (tahmin < jsTahminSayi) {
+    sonuc.textContent = '⬆️ Daha büyük bir sayı dene.';
+  } else {
+    sonuc.textContent = '⬇️ Daha küçük bir sayı dene.';
+  }
+}
+
+function jsTers() {
+  const metin = document.getElementById('jsTersInput').value.trim();
+  if (!metin) { document.getElementById('jsTersSonuc').textContent = '⚠️ Bir metin gir.'; return; }
+  const ters = metin.split('').reverse().join('');
+  document.getElementById('jsTersSonuc').textContent = '🔄 Ters: ' + ters;
+}
+
+function jsZar() {
+  const zar = Math.floor(Math.random() * 6) + 1;
+  document.getElementById('jsZarSonuc').textContent = '🎲 Zar: ' + zar;
+}
+
+let jsSayimInterval = null;
+function jsSayim() {
+  const saniye = parseInt(document.getElementById('jsSayimInput').value.trim());
+  const sonuc = document.getElementById('jsSayimSonuc');
+  if (!saniye || saniye < 1) { sonuc.textContent = '⚠️ Geçerli bir saniye gir.'; return; }
+  if (jsSayimInterval) clearInterval(jsSayimInterval);
+  let kalan = saniye;
+  sonuc.textContent = '⏱️ Kalan: ' + kalan + ' saniye';
+  jsSayimInterval = setInterval(() => {
+    kalan--;
+    if (kalan <= 0) {
+      clearInterval(jsSayimInterval);
+      jsSayimInterval = null;
+      sonuc.textContent = '⏰ Süre doldu!';
+    } else {
+      sonuc.textContent = '⏱️ Kalan: ' + kalan + ' saniye';
+    }
+  }, 1000);
+}
+
 // ==================== YETKİLİ PANELİ - KULLANICI ROLLERİ ====================
 function renderUsersList() {
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const listDiv = document.getElementById('usersList');
+    if (!listDiv) return;
     if (users.length === 0) {
         listDiv.innerHTML = '<p style="color:#666;">Henüz kullanıcı yok.</p>';
         return;
@@ -1779,7 +1910,6 @@ function checkUserForRole() {
         return;
     }
     
-    // Kullanıcı bulunduysa yetki seçeneklerini göster
     area.innerHTML = `
         <p style="color:#888; margin-bottom:8px;">Kullanıcı bulundu: <b style="color:#fff;">${user.name}</b></p>
         <select id="roleSelect" style="width:100%; padding:8px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06); color:#e0e0e0; border-radius:8px;">
@@ -1970,6 +2100,7 @@ function saveProfile(){
   document.getElementById('menuRole').textContent = role;
   closeModal('profileModal');
   updateStats();
+  updateAdminVisibility();
   showToast('✅ Profil kaydedildi.');
 }
 
@@ -1979,6 +2110,9 @@ function logout(){
   document.getElementById('menuRole').textContent = 'Ziyaretçi';
   showToast('🚪 Çıkış yapıldı.');
 }
+
+function addChannel(){ showToast('📂 Kanal oluşturma (demo)'); }
+function postAnnouncement(){ showToast('📢 Duyuru yayınlandı (demo)'); }
 
 // ==================== RENDER FONKSİYONLARI ====================
 function renderProducts(){
@@ -2008,7 +2142,7 @@ function renderFileFeed(){
   if (isLoggedIn()) {
     const user = JSON.parse(localStorage.getItem('cyberUser'));
     
-    // Admin hesabı her zaman Kurucu olsun
+    // admin hesabı her zaman Kurucu olsun
     if (user.name.toLowerCase() === 'admin') {
         user.role = 'Kurucu';
         localStorage.setItem('cyberUser', JSON.stringify(user));
@@ -2050,7 +2184,7 @@ function renderFileFeed(){
   renderFileFeed();
   renderUsersList();
   updateStats();
-  updateAdminVisibility(); // Menü görünürlüğünü başlangıçta kontrol et
+  updateAdminVisibility();
 })();
 </script>
 </body>
